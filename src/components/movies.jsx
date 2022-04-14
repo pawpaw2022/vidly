@@ -7,6 +7,7 @@ class Movies extends Component {
     state = { 
         movies: getMovies(),
         pageSize: 4,
+        currentPage: 1,
      } 
 
      handleDelete = movie => {
@@ -21,15 +22,20 @@ class Movies extends Component {
      };
 
      handlePageChange = (page) => {
-         console.log(page);
+         this.setState({ currentPage: page });
      }
 
-     renderMovies(){
 
-        if (this.state.movies.length === 0) return
+    render() { 
+
+        const { length: count } = this.state.movies;
+        const { pageSize, currentPage } = this.state;
+
+        if (this.state.movies.length === 0) return "There are no movies in the database."
 
 
          return <React.Fragment>
+             <p>Showing {this.state.movies.length} movies in the database.</p>
              <table className='table'>
                  <thead>
                      <tr>
@@ -64,27 +70,11 @@ class Movies extends Component {
                  </tbody>
              </table>
              <Pagination 
-              itemCount = {this.state.movies.length} 
-              pageSize = {this.state.pageSize}
+              itemCount = {count} 
+              pageSize = {pageSize}
+              currentPage = {currentPage}
               onPageChange={this.handlePageChange} />
          </React.Fragment>
-     }
-
-     renderSentence(){
-        if (this.state.movies.length === 0) return "There are no movies in the database."
-
-        return <p>Showing {this.state.movies.length} movies in the database.</p>;
-     }
-
-
-
-    render() { 
-        return (
-        <React.Fragment>
-            {this.renderSentence()}
-            {this.renderMovies()}
-        </React.Fragment>
-         );
     }
 
 
