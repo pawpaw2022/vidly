@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import _ from "lodash" // npm i lodash@4.17.10
+import _ from "lodash"; // npm i lodash@4.17.10
+import PropTypes from 'prop-types'; // npm i prop-types
 
 const Pagination = (props) => {
     
@@ -19,12 +20,22 @@ const Pagination = (props) => {
                 style={{cursor: 'pointer'}}
                 className={page === currentPage ? "page-item active" : "page-item"}> 
                     <a className="page-link"
-                        onClick={() => nPageChange(page)}>{page}</a>
+                        onClick={() => onPageChange(page)}>{page}</a>
                 </li>
             ))}
         </ul>
         </nav>
     );
 }
+
+// propTypes is used to check the correct type for each props
+// it gives a warning on the console if incorrect.
+Pagination.propTypes = {
+    itemCount: PropTypes.number.isRequired, 
+    pageSize: PropTypes.number.isRequired, 
+    currentPage: PropTypes.number.isRequired, 
+    onPageChange: PropTypes.func.isRequired, 
+};
+
  
 export default Pagination;

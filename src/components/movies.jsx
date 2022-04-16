@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 import { getMovies } from "../services/fakeMovieService";
+import { getGenres } from '../services/fakeGenreService';
 import Like from './common/like';
 import Pagination from './common/pagination';
+import ListGroup from './common/listGroup';
+import { paginate } from '../utils/paginate';
 
 class Movies extends Component {
     state = { 
-        movies: getMovies(),
+        movies: [], // initialize empty array
+        genres: [],
         pageSize: 4,
         currentPage: 1,
      } 
+
+     // import the data from backend services 
+     componentDidMount() {
+        const genres = [{name: 'All Genres' }, ...getGenres()]
+
+         this.setState({ movies: getMovies(), genres });
+     }
 
      handleDelete = movie => {
          const movies = this.state.movies.filter(m => m._id !== movie._id);
@@ -25,31 +36,51 @@ class Movies extends Component {
          this.setState({ currentPage: page });
      }
 
+     handleGenreSelect = (genre) => {
+        this.setState({ selectedGenre: genre, currentPage: 1});
+     }
+
 
     render() { 
 
         const { length: count } = this.state.movies;
-        const { pageSize, currentPage } = this.state;
+        const { pageSize, currentPage, selectedGenre, genres,movies: allMovies} = this.state;
 
-        if (this.state.movies.length === 0) return "There are no movies in the database."
+        const filtered = selectedGenre && selectedGenre._id
+            ? allMovies.filter(m => m.genre.name === selectedGenre.name)
+            : allMovies;
+
+        const movies = paginate(filtered, currentPage, pageSize)
+
+        if (count === 0) return "There are no movies in the database."
 
 
          return <React.Fragment>
-             <p>Showing {this.state.movies.length} movies in the database.</p>
-             <table className='table'>
-                 <thead>
-                     <tr>
-                         <th>Title</th>
-                         <th>Genre</th>
-                         <th>Stock</th>
-                         <th>Rate</th>
-                         <th></th>
-                         <th></th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                     {
-                        this.state.movies.map(movie =>
+                <div className="row">
+
+                    <div className="col-2">
+                        <ListGroup 
+                        genres = {genres}
+                        selectedGenre = {this.state.selectedGenre}
+                        onGenreSelect={this.handleGenreSelect} />
+                    </div>
+
+                    <div className="col">
+                    <p>Showing {filtered.length} movies in the database.</p>
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Genre</th>
+                            <th>Stock</th>
+                            <th>Rate</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                        movies.map(movie =>
                             <tr key={movie._id}>
                                 <td>{movie.title}</td>
                                 <td>{movie.genre.name}</td>
@@ -66,14 +97,18 @@ class Movies extends Component {
                                 </td>
                             </tr>
                             )
-                     }
-                 </tbody>
-             </table>
-             <Pagination 
-              itemCount = {count} 
-              pageSize = {pageSize}
-              currentPage = {currentPage}
-              onPageChange={this.handlePageChange} />
+                        }
+                    </tbody>
+                </table>
+                <Pagination 
+                itemCount = {filtered.length} 
+                pageSize = {pageSize}
+                currentPage = {currentPage}
+                onPageChange={this.handlePageChange} />
+                    </div>
+                </div>
+
+             
          </React.Fragment>
     }
 
