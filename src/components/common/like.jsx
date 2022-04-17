@@ -4,10 +4,10 @@ import React, { Component } from 'react';
 // input: liked: boolean
 // output: onClick
 
-const Like = (props) => {
+const Like = ({liked, onClick}) => {
     let classes = "fa fa-heart";
-    if (!props.liked) classes += "-o"
-    return (<i onClick={props.onClick}
+    if (!liked) classes += "-o"
+    return (<i onClick={onClick}
         className={classes + " clickable"}
         />);
 }

@@ -1,5 +1,6 @@
 import _ from 'lodash'
 
+// Determine how many movies should be displayed on a page depending on the pageSize
 export function paginate(items, pageNumber, pageSize){
     const startIndex = (pageNumber - 1) * pageSize;
 

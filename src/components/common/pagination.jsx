@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import _ from "lodash"; // npm i lodash@4.17.10
 import PropTypes from 'prop-types'; // npm i prop-types
 
-const Pagination = (props) => {
+const Pagination = ({itemCount, pageSize, currentPage, onPageChange}) => {
     
-    const { itemCount, pageSize, currentPage, onPageChange } = props; // deconstruction
     const pagesCount = Math.ceil( itemCount / pageSize); // round down
     if (pagesCount === 1) return null; // Don't show pagination if only 1 movie
     const pages = _.range(1, pagesCount+1); // pages = [1, 2, 3] 
