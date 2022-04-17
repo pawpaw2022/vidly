@@ -7,9 +7,8 @@ const ListGroup = (props) => {
     return <ul className="list-group">
     {genres.map(genre => 
         <li 
-        className={selectedGenre===genre ? 'list-group-item active' : 'list-group-item'}
+        className= {selectedGenre===genre ? 'clickable list-group-item active' : 'clickable list-group-item'}
         key={genre[valueProperty]}
-        style={{cursor: 'pointer'}}
         onClick={() => onGenreSelect(genre)}>
            {genre[textProperty]}
         </li>
