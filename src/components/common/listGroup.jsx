@@ -6,7 +6,7 @@ const ListGroup = ({ genres, textProperty, valueProperty, onGenreSelect, selecte
     return <ul className="list-group">
     {genres.map(genre => 
         <li 
-        className= {selectedGenre===genre ? 'clickable list-group-item active' : 'list-group-item'}
+        className= {selectedGenre===genre ? 'clickable list-group-item active' : 'clickable list-group-item'}
         key={genre[valueProperty]}
         onClick={() => onGenreSelect(genre)}>
            {genre[textProperty]}
