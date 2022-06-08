@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import  Joi  from 'joi-browser'; // instead of { Joi }
 import Input from './input';
+import Select from './select';
 
 
 
@@ -33,10 +34,10 @@ class Form extends Component {
     handleSubmit = e => {
         e.preventDefault(); // prevent network request.
 
-        const errors = this.validate() || {}; // if no error, use empty {}
-        this.setState({ errors });
+        const errors = this.validate();
+        this.setState({ errors: errors || {}});  // if no error, use empty {}
         if (errors) return; 
-
+        
         this.doSubmit();
     }
 
@@ -61,6 +62,22 @@ class Form extends Component {
             label= {label}
             value= {data[name]}
             autoFocus= {autoFocus}
+            onChange= {this.handleChange}
+            error = {errors[name]}
+        />
+    }
+
+    renderSelect = (name, label, options) =>{
+
+
+        const { data, errors} = this.state;
+
+
+        return <Select 
+            options={options}
+            name= {name}
+            label= {label}
+            value= {data[name]}
             onChange= {this.handleChange}
             error = {errors[name]}
         />

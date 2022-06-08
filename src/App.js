@@ -19,6 +19,7 @@ class App extends Component {
         <main className='container'>
         <NavBar />
           <Switch>
+            <Route path="/new" component={MovieForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/register" component={Register} />
             <Route path="/movies/:id" component={MovieForm} />
