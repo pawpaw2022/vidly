@@ -72,7 +72,6 @@ class Form extends Component {
 
         const { data, errors} = this.state;
 
-
         return <Select 
             options={options}
             name= {name}
