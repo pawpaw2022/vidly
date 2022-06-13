@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from '../services/fakeGenreService';
+import { getMovies, deleteMovie } from "../services/movieService";
+import { getGenres } from '../services/genreService';
 import Pagination from './common/pagination';
 import ListGroup from './common/listGroup';
 import MoviesTable from './moviesTable';
@@ -8,6 +8,7 @@ import { paginate } from '../utils/paginate';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import SearchBox from './common/searchBox';
+import { toast } from 'react-toastify';
 
 class Movies extends Component {
     state = { 
@@ -21,16 +22,30 @@ class Movies extends Component {
      } 
 
      // import the data from backend services 
-     componentDidMount() {
-        const allGenres = {_id: "", name: 'All Genres' }
-        const genres = [allGenres, ...getGenres()]
+     async componentDidMount() {
+        const { data: genreData } = await getGenres();
+        const allGenres = {_id: "", name: 'All Genres' };
+        const genres = [allGenres, ...genreData];
 
-         this.setState({ movies: getMovies(), genres, selectedGenre: allGenres });
+        const { data: movieData } = await getMovies();
+         this.setState({ movies: movieData, genres, selectedGenre: allGenres });
      }
 
-     handleDelete = movie => {
-         const movies = this.state.movies.filter(m => m._id !== movie._id);
+     handleDelete = async movie => {
+         const originalMovies = this.state.movies;
+         const movies = originalMovies.filter(m => m._id !== movie._id);
          this.setState({movies})
+
+         try{ 
+            await deleteMovie(movie._id);
+            // throw new Error(""); // testing
+          }catch (ex){
+            if (ex.response && ex.response.status === 404)
+              toast.error("This movie has already been deleted.")
+            this.setState({ movies: originalMovies });
+          }
+
+         
      };
      
      handleLike = movie => {

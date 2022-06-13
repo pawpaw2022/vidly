@@ -8,6 +8,7 @@ import 'font-awesome/css/font-awesome.css';
 import Movies from './components/movies';
 import { BrowserRouter } from 'react-router-dom';
 
+
 ReactDOM.render(
 <BrowserRouter>
     <App />
