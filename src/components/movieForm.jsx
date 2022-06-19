@@ -68,7 +68,6 @@ class MovieForm extends Form {
 
 
     render() { 
-
         return (
             <div>
                 <h1>Movie Form</h1>
