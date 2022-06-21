@@ -1,13 +1,14 @@
 import http from "./httpService"
-import config from "../config.json"
+
+const apiEndPoint = "/movies";
 
 
 function movieUrl(id){
-    return `${config.moviesApiEndPoint}/${id}`
+    return `${apiEndPoint}/${id}`
 }
 
 export function getMovies() {
-    return http.get(config.moviesApiEndPoint);
+    return http.get(apiEndPoint);
 }
   
   
@@ -25,7 +26,7 @@ export function saveMovie(movie) {
         return http.put(movieUrl(movie._id), body);         
     }
 
-    return http.post(config.moviesApiEndPoint, body); 
+    return http.post(apiEndPoint, body); 
 }
 
 export function deleteMovie(id) {
