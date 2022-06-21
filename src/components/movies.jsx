@@ -97,7 +97,6 @@ class Movies extends Component {
         const { user } = this.props;
         
 
-        if (count === 0) return "There are no movies in the database."
 
 
          return <React.Fragment>
